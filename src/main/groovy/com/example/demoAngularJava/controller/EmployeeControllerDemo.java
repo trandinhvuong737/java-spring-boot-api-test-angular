@@ -1,6 +1,6 @@
 package com.example.demoAngularJava.controller;
 
-import com.example.demoAngularJava.dto.Service.EmployeeService;
+import com.example.demoAngularJava.Service.EmployeeService;
 import com.example.demoAngularJava.entity.EmployeeDemoEntity;
 import com.example.demoAngularJava.dto.EmployeeDto;
 import java.util.List;

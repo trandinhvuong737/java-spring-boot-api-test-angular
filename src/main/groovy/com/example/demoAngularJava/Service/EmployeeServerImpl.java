@@ -1,4 +1,4 @@
-package com.example.demoAngularJava.dto.Service;
+package com.example.demoAngularJava.Service;
 
 import com.example.demoAngularJava.entity.EmployeeDemoEntity;
 import com.example.demoAngularJava.repository.EmployeeRepositoryDemo;
