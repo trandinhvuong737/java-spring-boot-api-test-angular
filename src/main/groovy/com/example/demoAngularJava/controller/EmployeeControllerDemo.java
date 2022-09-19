@@ -1,10 +1,13 @@
 package com.example.demoAngularJava.controller;
 
 import com.example.demoAngularJava.Service.EmployeeService;
+import com.example.demoAngularJava.dto.SortEmployeeDto;
 import com.example.demoAngularJava.entity.EmployeeDemoEntity;
 import com.example.demoAngularJava.dto.EmployeeDto;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,8 +27,17 @@ public class EmployeeControllerDemo {
   private final EmployeeService employeeServer;
 
   @GetMapping
-  public List<EmployeeDemoEntity> getAllEmployees() {
-    return employeeServer.getAllEmployees();
+  public ResponseEntity<List<EmployeeDemoEntity>> getAllEmployees() {
+    return ResponseEntity.ok().body(employeeServer.getAllEmployees());
+  }
+
+  @PostMapping("/sort")
+  public List<EmployeeDemoEntity> sortEmployees(@RequestBody SortEmployeeDto sortEmployeeDto) {
+    if (sortEmployeeDto.getDirection().equals(Direction.ASC)) {
+      return employeeServer.sortEmployees(Direction.ASC, sortEmployeeDto.getFilter());
+    } else {
+      return employeeServer.sortEmployees(Direction.DESC, sortEmployeeDto.getFilter());
+    }
   }
 
   @GetMapping("/{id}")

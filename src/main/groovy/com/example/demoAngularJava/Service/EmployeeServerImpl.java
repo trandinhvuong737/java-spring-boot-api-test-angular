@@ -1,14 +1,19 @@
 package com.example.demoAngularJava.Service;
 
 import com.example.demoAngularJava.entity.EmployeeDemoEntity;
+import com.example.demoAngularJava.exception.EmployeeNotFoundException;
 import com.example.demoAngularJava.repository.EmployeeRepositoryDemo;
 import com.example.demoAngularJava.dto.EmployeeDto;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EmployeeServerImpl implements EmployeeService {
 
+  @Autowired
   private final EmployeeRepositoryDemo employeeRepositoryDemo;
 
   public EmployeeServerImpl(EmployeeRepositoryDemo employeeRepositoryDemo) {
@@ -19,16 +24,21 @@ public class EmployeeServerImpl implements EmployeeService {
   public List<EmployeeDemoEntity> getAllEmployees() {
     return employeeRepositoryDemo.findAll();
   }
+  @Override
+  public List<EmployeeDemoEntity> sortEmployees(Direction direction, String filter) {
+    return employeeRepositoryDemo.findAll(
+        Sort.by(direction, filter));
+  }
 
   @Override
   public EmployeeDemoEntity getEmployeesById(int id) {
-    return employeeRepositoryDemo.findFirstById(id);
+    return employeeRepositoryDemo.findFirstById(id).orElseThrow(EmployeeNotFoundException::new);
   }
 
   @Override
   public void updateEmployee(EmployeeDto employeeDto) {
     EmployeeDemoEntity employeeDemoEntity = employeeRepositoryDemo.findFirstById(
-        employeeDto.getId());
+        employeeDto.getId()).orElseThrow(EmployeeNotFoundException::new);
     employeeDemoEntity.setFirstName(employeeDto.getFirstName());
     employeeDemoEntity.setLastName(employeeDto.getLastName());
     employeeDemoEntity.setAge(employeeDto.getAge());
