@@ -1,5 +1,6 @@
 package com.example.demoAngularJava.Service;
 
+import com.example.demoAngularJava.dto.SortEmployeeDto;
 import com.example.demoAngularJava.entity.EmployeeDemoEntity;
 import com.example.demoAngularJava.exception.EmployeeNotFoundException;
 import com.example.demoAngularJava.repository.EmployeeRepositoryDemo;
@@ -7,7 +8,6 @@ import com.example.demoAngularJava.dto.EmployeeDto;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,10 +24,11 @@ public class EmployeeServerImpl implements EmployeeService {
   public List<EmployeeDemoEntity> getAllEmployees() {
     return employeeRepositoryDemo.findAll();
   }
+
   @Override
-  public List<EmployeeDemoEntity> sortEmployees(Direction direction, String filter) {
+  public List<EmployeeDemoEntity> sortEmployees(SortEmployeeDto sortEmployeeDto) {
     return employeeRepositoryDemo.findAll(
-        Sort.by(direction, filter));
+        Sort.by(sortEmployeeDto.getDirection(), sortEmployeeDto.getFilter()));
   }
 
   @Override
@@ -49,7 +50,7 @@ public class EmployeeServerImpl implements EmployeeService {
   }
 
   @Override
-  public void addEmployee(EmployeeDto employeeDto) {
+  public EmployeeDemoEntity addEmployee(EmployeeDto employeeDto) {
     EmployeeDemoEntity employeeDemoEntity = new EmployeeDemoEntity();
     employeeDemoEntity.setFirstName(employeeDto.getFirstName());
     employeeDemoEntity.setLastName(employeeDto.getLastName());
@@ -58,6 +59,7 @@ public class EmployeeServerImpl implements EmployeeService {
     employeeDemoEntity.setGender(employeeDto.getGender());
     employeeDemoEntity.setPhoneNumber(employeeDto.getPhoneNumber());
     employeeRepositoryDemo.save(employeeDemoEntity);
+    return employeeDemoEntity;
   }
 
   @Override

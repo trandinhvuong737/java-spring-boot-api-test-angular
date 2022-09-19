@@ -32,31 +32,33 @@ public class EmployeeControllerDemo {
   }
 
   @PostMapping("/sort")
-  public List<EmployeeDemoEntity> sortEmployees(@RequestBody SortEmployeeDto sortEmployeeDto) {
+  public ResponseEntity<List<EmployeeDemoEntity>> sortEmployees(@RequestBody SortEmployeeDto sortEmployeeDto) {
     if (sortEmployeeDto.getDirection().equals(Direction.ASC)) {
-      return employeeServer.sortEmployees(Direction.ASC, sortEmployeeDto.getFilter());
+      return ResponseEntity.ok().body(employeeServer.sortEmployees(sortEmployeeDto));
     } else {
-      return employeeServer.sortEmployees(Direction.DESC, sortEmployeeDto.getFilter());
+      return ResponseEntity.ok().body(employeeServer.sortEmployees(sortEmployeeDto));
     }
   }
 
   @GetMapping("/{id}")
-  public EmployeeDemoEntity getEmployeesById(@PathVariable int id) {
-    return employeeServer.getEmployeesById(id);
+  public ResponseEntity<EmployeeDemoEntity> getEmployeesById(@PathVariable int id) {
+    return ResponseEntity.ok().body(employeeServer.getEmployeesById(id));
   }
 
   @PutMapping("/update")
-  public void updateEmployee(@RequestBody EmployeeDto employee) {
+  public ResponseEntity updateEmployee(@RequestBody EmployeeDto employee) {
     employeeServer.updateEmployee(employee);
+    return ResponseEntity.ok().build();
   }
 
   @PostMapping("/add")
-  public void addEmployee(@RequestBody EmployeeDto employee) {
-    employeeServer.addEmployee(employee);
+  public ResponseEntity<EmployeeDemoEntity> addEmployee(@RequestBody EmployeeDto employee) {
+    return ResponseEntity.ok().body(employeeServer.addEmployee(employee));
   }
 
   @DeleteMapping("/{id}")
-  public void deleteEmployee(@PathVariable int id) {
+  public ResponseEntity deleteEmployee(@PathVariable int id) {
     employeeServer.deleteEmployee(id);
+    return ResponseEntity.ok().build();
   }
 }

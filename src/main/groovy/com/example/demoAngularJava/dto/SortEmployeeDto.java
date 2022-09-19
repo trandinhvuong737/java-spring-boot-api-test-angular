@@ -9,4 +9,5 @@ public class SortEmployeeDto {
 
   Direction direction;
   String filter;
+
 }
